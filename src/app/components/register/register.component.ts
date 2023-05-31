@@ -12,7 +12,7 @@ export class RegisterComponent {
     userName: new FormControl("", [Validators.required, Validators.minLength(3)]),
     password: new FormControl("", [Validators.required, Validators.minLength(6)]),
     confirmPassword: new FormControl("", [Validators.required, Validators.minLength(6)])
-  }, [this.arePasswordsEqual])
+  }, [this.arePasswordsEqual()])
 
   arePasswordsEqual(): ValidatorFn {
     return (formGroup) => {

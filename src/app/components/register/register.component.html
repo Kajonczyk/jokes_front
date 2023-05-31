@@ -22,6 +22,9 @@
 					<div *ngIf="registerForm.controls['password'].errors?.['required']">
 						This field is required
 					</div>
+					<div *ngIf="registerForm.controls['password'].errors?.['pwdMismatch']">
+						Passwords do not match
+					</div>
 				</div>
 			</div>
 			<div class="inputWrapper">
@@ -32,6 +35,9 @@
 					</div>
 					<div *ngIf="registerForm.controls['confirmPassword'].errors?.['required']">
 						This field is required
+					</div>
+					<div *ngIf="registerForm.controls['confirmPassword'].errors?.['pwdMismatch']">
+						Passwords do not match
 					</div>
 				</div>
 			</div>
