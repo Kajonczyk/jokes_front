@@ -1,0 +1,45 @@
+
+<div class="flex items-center justify-center h-100 flex-column">
+	<h2 class="mb-5">Register</h2>
+		<form [formGroup]="registerForm" (ngSubmit)="onSubmit($event)">
+			<div class="inputWrapper">
+				<app-input formControlName="userName" labelText="Username"></app-input>
+				<div class="fieldError" *ngIf="isFieldValidatedCorrectly('userName')">
+					<div *ngIf="registerForm.controls['userName'].errors?.['minlength']">
+						User name must consists of at least 3 characters
+					</div>
+					<div *ngIf="registerForm.controls['userName'].errors?.['required']">
+						This field is required
+					</div>
+				</div>
+			</div>
+			<div class="inputWrapper">
+				<app-input formControlName="password" type="password" labelText="Password"></app-input>
+				<div class="fieldError" *ngIf="isFieldValidatedCorrectly('password')">
+					<div *ngIf="registerForm.controls['password'].errors?.['minlength']">
+						Password must consists of at least 6 characters
+					</div>
+					<div *ngIf="registerForm.controls['password'].errors?.['required']">
+						This field is required
+					</div>
+				</div>
+			</div>
+			<div class="inputWrapper">
+				<app-input formControlName="confirmPassword" type="password" labelText="Confirm Password"></app-input>
+				<div class="fieldError" *ngIf="isFieldValidatedCorrectly('confirmPassword')">
+					<div *ngIf="registerForm.controls['confirmPassword'].errors?.['minlength']">
+						Password must consists of at least 6 characters
+					</div>
+					<div *ngIf="registerForm.controls['confirmPassword'].errors?.['required']">
+						This field is required
+					</div>
+				</div>
+			</div>
+
+<!--			<button (click)="onSubmit($event)" [disabled]="!registerForm.invalid">buton</button>-->
+			<div class="flex items-center justify-center">
+				<app-button text="Register"></app-button>
+			</div>
+			<div class="mt-3 flex items-center justify-center"><a [routerLink]="'/login'" class="underline">Login</a></div>
+		</form>
+</div>
