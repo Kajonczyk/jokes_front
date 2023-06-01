@@ -9,6 +9,9 @@ import { ButtonComponent } from './components/button/button.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { JokesBackgroundComponent } from './components/jokes-background/jokes-background.component';
 import { LoginComponent } from './components/login/login.component';
+import {AuthService} from './services/auth.service';
+import {HttpClientModule} from '@angular/common/http';
+import {RequestInterceptor} from './interceptors/request.interceptor';
 
 @NgModule({
   declarations: [
@@ -23,9 +26,10 @@ import { LoginComponent } from './components/login/login.component';
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [AuthService, RequestInterceptor],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import {FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
+import {AuthService} from '../../services/auth.service';
+import {Register} from '../../types/user';
 
 @Component({
   selector: 'app-register',
@@ -8,11 +10,17 @@ import {FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 })
 export class RegisterComponent {
 
+  constructor(private authService: AuthService) {
+  }
+
+
   registerForm = new FormGroup({
-    userName: new FormControl("", [Validators.required, Validators.minLength(3)]),
-    password: new FormControl("", [Validators.required, Validators.minLength(6)]),
-    confirmPassword: new FormControl("", [Validators.required, Validators.minLength(6)])
+    userName: new FormControl("kajonczykowaty", [Validators.required, Validators.minLength(3)]),
+    password: new FormControl("kajonczykowaty", [Validators.required, Validators.minLength(6)]),
+    confirmPassword: new FormControl("kajonczykowaty", [Validators.required, Validators.minLength(6)])
   }, [this.arePasswordsEqual()])
+
+
 
   arePasswordsEqual(): ValidatorFn {
     return (formGroup) => {
@@ -36,6 +44,9 @@ export class RegisterComponent {
     if (this.registerForm.invalid) {
       this.registerForm.markAllAsTouched();
     }
+
+
+    this.authService.register(this.registerForm.value as Register).subscribe((data) => {console.log("jest kox", data)}, (err) => {console.log("jebło", err)})
     //@TODO SEND REQUEST
     console.log(this.registerForm.get('userName')?.errors)
     console.log(this.registerForm.get('password')?.errors)
