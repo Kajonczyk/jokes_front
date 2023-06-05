@@ -22,7 +22,7 @@ export class AuthService {
 		const {confirmPassword, ...dataToSend} = data
 		return this.httpService.post<string>(`${environment.apiUrl}/auth/register`, dataToSend).pipe(
 			tap(token => {
-				this.router.navigate([""])
+				this.router.navigate(["/dashboard"])
 				this.setJWTToken(token)
 			})
 		)
@@ -31,7 +31,7 @@ export class AuthService {
 	login(data: Login){
 		return this.httpService.post<string>(`${environment.apiUrl}/auth/login`, data).pipe(
 			tap(token => {
-				this.router.navigate([""])
+				this.router.navigate(["/dashboard"])
 				this.setJWTToken(token)
 			})
 		)
