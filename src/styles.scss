@@ -11,6 +11,8 @@ body {
 
 * {
 	font-family: 'Odibee Sans', cursive;
+	box-sizing: border-box;
+
 }
 
 h2 {
@@ -37,6 +39,12 @@ h3 {
 
 .flex-column {
 	flex-direction: column;
+}
+
+.flex-full-center {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .h-100 {

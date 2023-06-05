@@ -1,0 +1,30 @@
+<div class="flex items-center h-100 flex-column dashboardWrapper">
+
+	<div class="dashboardWrapper--logoutIcon" (click)="logout()"><img src="./assets/doorIcon.svg" alt="logout"></div>
+	<h2 class="dashboardWrapper--heading">UserName</h2>
+	<div class="dashboardWrapper--cardsWrapper flex">
+		<div class="card">
+			<h3 class="card--heading">Open Rooms</h3>
+			<ng-container *ngFor="let room of roomsList">
+				<div class="cardTile"><div>{{room.name}}</div>
+
+					<div class="flex items-center">
+						<div>{{room.membersCount}}/{{room.membersLimit}}</div>
+						<img src="./assets/usersIcon.svg" alt="users">
+					</div>
+				</div>
+			</ng-container>
+		</div>
+		<div class="flex card">
+			<h3 class="card--heading">Recent Games</h3>
+			<ng-container *ngFor="let room of roomsList">
+				<div class="cardTile"><div>{{room.name}}</div>
+
+					<div class="flex items-center">
+						<img src="./assets/arrowDownIcon.svg" alt="expand">
+					</div>
+				</div>
+			</ng-container>
+		</div>
+	</div>
+</div>
