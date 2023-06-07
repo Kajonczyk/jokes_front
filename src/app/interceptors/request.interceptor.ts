@@ -12,7 +12,8 @@ export class RequestInterceptor implements HttpInterceptor {
 
 	intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 		request = request.clone({
-			headers: request.headers.set("Authorization", 'Bearer ' + this.cookiesService.get('jwt'))
+			headers: request.headers.set("Authorization", 'Bearer ' + this.cookiesService.get('jwt')),
+			withCredentials: true
 		});
 		return next.handle(request);
 	}

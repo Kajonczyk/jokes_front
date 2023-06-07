@@ -16,6 +16,10 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import {GuestGuardService} from './services/guest-guard.service';
 import {LoggedUserGuardService} from './services/logged-user-guard.service';
 import {RoomsService} from './services/rooms.service';
+import {StoreModule} from '@ngrx/store';
+import {userReducer} from './store/reducers/user.reducer';
+import {UserService} from './services/user.service';
+import {roomsReducer} from './store/reducers/rooms.reducer';
 
 @NgModule({
   declarations: [
@@ -32,9 +36,10 @@ import {RoomsService} from './services/rooms.service';
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    StoreModule.forRoot({user: userReducer, rooms: roomsReducer}),
   ],
-  providers: [AuthService, GuestGuardService, LoggedUserGuardService, RoomsService, {
+  providers: [AuthService, UserService, GuestGuardService, LoggedUserGuardService, RoomsService, {
     provide: HTTP_INTERCEPTORS,
     useClass: RequestInterceptor,
     multi: true,

@@ -9,8 +9,8 @@ import {DashboardComponent} from './pages/dashboard/dashboard.component';
 const routes: Routes = [
   {path: "register", component: RegisterComponent, canActivate: [GuestGuardService]},
   {path: "login", component: LoginComponent, canActivate: [GuestGuardService]},
-  // {path: "dashboard", component: DashboardComponent, canActivate: [LoggedUserGuardService]}
-  {path: "dashboard", component: DashboardComponent}
+  {path: "dashboard", component: DashboardComponent, canActivate: [LoggedUserGuardService]}
+  // {path: "dashboard", component: DashboardComponent}
 ];
 
 @NgModule({
