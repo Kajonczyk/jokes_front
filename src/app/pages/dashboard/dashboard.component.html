@@ -1,30 +1,29 @@
 <div class="flex items-center h-100 flex-column dashboardWrapper">
-	<div (click)="test()">TEST LOG</div>
-	<div class="dashboardWrapper--logoutIcon" (click)="logout()"><img src="./assets/doorIcon.svg" alt="logout"></div>
-	<h2 class="dashboardWrapper--heading">{{(user$ | async)?.userName}}</h2>
-	<div class="dashboardWrapper--cardsWrapper flex">
-		<div class="card">
-			<h3 class="card--heading">Open Rooms</h3>
-			<ng-container *ngFor="let room of rooms$ | async">
-				<div class="cardTile"><div>{{room.name}}</div>
-
-					<div class="flex items-center">
-						<div>{{room.membersCount}}/{{room.membersLimit}}</div>
-						<img src="./assets/usersIcon.svg" alt="users">
-					</div>
-				</div>
-			</ng-container>
-		</div>
-		<div class="flex card">
-			<h3 class="card--heading">Recent Games</h3>
-			<ng-container *ngFor="let room of roomsList">
-				<div class="cardTile"><div>{{room.name}}</div>
-
-					<div class="flex items-center">
-						<img src="./assets/arrowDownIcon.svg" alt="expand">
-					</div>
-				</div>
-			</ng-container>
-		</div>
-	</div>
+  <div class="dashboardWrapper--logoutIcon" (click)="logout()">
+    <img src="./assets/doorIcon.svg" alt="logout" />
+  </div>
+  <h2 class="dashboardWrapper--heading">{{ (user$ | async)?.userName }}</h2>
+  <div class="dashboardWrapper--cardsWrapper flex">
+    <div class="card">
+      <h3 class="card--heading">Open Rooms</h3>
+      <ng-container *ngFor="let room of rooms$ | async">
+        <app-card [title]="room.name">
+          <div class="flex items-center">
+            <div>{{ room.membersCount }}/{{ room.membersLimit }}</div>
+            <img src="./assets/usersIcon.svg" alt="users" />
+          </div>
+        </app-card>
+      </ng-container>
+    </div>
+    <div class="flex card">
+      <h3 class="card--heading">Recent Games</h3>
+      <ng-container *ngFor="let room of testRoomsList">
+        <app-card [title]="room.name">
+          <div class="flex items-center">
+            <img src="./assets/arrowDownIcon.svg" alt="expand" />
+          </div>
+        </app-card>
+      </ng-container>
+    </div>
+  </div>
 </div>

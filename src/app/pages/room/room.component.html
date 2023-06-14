@@ -1,0 +1,40 @@
+<div class="roomWrapper">
+  <div class="roomWrapper-info">
+    <div class="roomWrapper-info-score">
+      <h3>Scoreboard</h3>
+
+      <div class="roomWrapper-info-scroll-container">
+        <ng-container *ngFor="let score of (roomInfo$ | async)?.score">
+          <app-card [title]="score.userName">
+            <div class="flex items-center">
+              <div>{{ score.score }}</div>
+            </div>
+          </app-card>
+        </ng-container>
+      </div>
+    </div>
+    <div class="roomWrapper-info-title">
+      <h2>{{ (roomInfo$ | async)?.name }}</h2>
+    </div>
+    <div class="roomWrapper-info-past-jokes">
+      <h3>Past Jokes</h3>
+
+      <div class="roomWrapper-info-scroll-container">
+        <ng-container *ngFor="let joke of (roomInfo$ | async)?.jokes">
+          <app-card [title]="joke.content"></app-card>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  <div class="roomWrapper-joke">
+    Yo mama is so fat that when she walks on a scale , urna at lobortis
+    ullamcorper, nisl erat commodo leo, vitae gravida purus magna nec justo.
+    Phasellus vehicula luctus ipsum gravida facilisis.
+  </div>
+
+  <div class="roomWrapper-players">
+    <ng-container *ngFor="let user of (roomInfo$ | async)?.users">
+      <app-player [user]="user"></app-player>
+    </ng-container>
+  </div>
+</div>

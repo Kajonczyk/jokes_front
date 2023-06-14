@@ -1,4 +1,3 @@
-import {AppState} from '../../types/appState';
+import { AppState } from '../../types/appState';
 
-
-export const getRooms = (state: AppState) => state.rooms
+export const getRooms = (state: AppState) => state.rooms;

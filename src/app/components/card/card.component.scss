@@ -1,0 +1,27 @@
+:host {
+  width: 100%;
+}
+
+.card {
+  width: 100%;
+}
+
+.cardTile {
+  min-height: 40px;
+  width: 100%;
+  background: black;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 13px;
+  margin-bottom: 15px;
+  font-size: 26px;
+  box-shadow: 0 0 13px rgba(0, 0, 0, 0.9);
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.card--heading {
+  margin-bottom: 20px;
+}

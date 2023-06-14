@@ -1,5 +1,11 @@
-import {Component, EventEmitter, forwardRef, Input, Output} from '@angular/core';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {
+  Component,
+  EventEmitter,
+  forwardRef,
+  Input,
+  Output,
+} from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 interface ChangeEvent {
   target: { value: string };
 }
@@ -11,24 +17,19 @@ interface ChangeEvent {
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => InputComponent),
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class InputComponent implements ControlValueAccessor {
+  @Output() handleChange: EventEmitter<any> = new EventEmitter<any>();
+  @Input() labelText = '';
+  @Input() type = 'text';
 
-  @Output() handleChange: EventEmitter<any> = new EventEmitter<any>()
-  @Input() labelText = ""
-  @Input() type = "text"
-  value: string = "";
+  value: string = '';
+
   onChange: any = () => {};
   onTouched: any = () => {};
-
-
-  // onChange(event: Event){
-  //   console.log("dupa")
-  //   this.handleChange.emit((event.target as HTMLInputElement).value)
-  // }
 
   writeValue(value: any) {
     this.value = value;
@@ -48,5 +49,4 @@ export class InputComponent implements ControlValueAccessor {
     this.onChange(targetValue);
     this.onTouched();
   }
-
 }

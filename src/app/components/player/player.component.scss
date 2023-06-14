@@ -1,0 +1,47 @@
+.player {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
+}
+
+.player-avatar {
+  width: 95px;
+  height: 95px;
+  border-radius: 33px;
+  margin-bottom: 6px;
+  background: orange;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+
+  img {
+    display: block;
+    height: 95px;
+    width: 95px;
+  }
+}
+
+.player-name {
+  font-size: 26px;
+  max-width: 95px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.player-avatar_voting {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  background: rgba(0, 0, 0, 0.6);
+  height: 100%;
+  width: 100%;
+  font-size: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
