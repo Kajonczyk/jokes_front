@@ -2,10 +2,10 @@ import { createReducer, on } from '@ngrx/store';
 import * as RoomActions from '../actions/room.action';
 import { RoomInfo } from '../../types/room';
 
-const initialState = {};
+const initialState: Partial<RoomInfo> = {};
 
 export const roomReducer = createReducer(
-  initialState as RoomInfo,
+  initialState,
   on(RoomActions.setRoomInfo, (state, action) => ({
     ...action.roomInfo,
     score: [],

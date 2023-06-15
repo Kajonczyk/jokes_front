@@ -1,5 +1,6 @@
 :host {
   width: 100%;
+  margin-bottom: 15px;
 }
 
 .card {
@@ -15,7 +16,6 @@
   align-items: center;
   justify-content: space-between;
   padding: 5px 13px;
-  margin-bottom: 15px;
   font-size: 26px;
   box-shadow: 0 0 13px rgba(0, 0, 0, 0.9);
   cursor: pointer;

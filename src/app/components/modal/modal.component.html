@@ -1,0 +1,15 @@
+<div class="modalWrapper" (click)="onModalCancel()">
+	<div class="modal" (click)="$event.stopPropagation()">
+		<div class="modal--heading">
+			<h3>{{modalTitle}}</h3>
+			<div class="modal--heading--line"></div>
+		</div>
+		<div class="modal--content">
+			{{text}}
+		</div>
+		<div class="modal--buttons">
+			<app-button [text]="'Cancel'" variant="ghost" (click)="onModalCancel()"></app-button>
+			<app-button [text]="'Confirm'" (click)="onModalConfirm()"></app-button>
+		</div>
+	</div>
+</div>

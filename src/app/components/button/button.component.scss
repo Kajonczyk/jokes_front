@@ -1,11 +1,17 @@
 button {
-  height: 36px;
+  height: 32px;
   width: 150px;
   border-radius: 8px;
   background: black;
   border: 0;
   color: white;
-  font-size: 16px;
+  font-size: 14px;
   font-family: "Prompt", sans-serif;
   cursor: pointer;
+
+  &.ghost {
+    background: none;
+    border: 2px solid black;
+    color: black;
+  }
 }

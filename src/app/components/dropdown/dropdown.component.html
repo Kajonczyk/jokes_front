@@ -1,0 +1,13 @@
+<div class="dropdownWrapper" (click)="toggleDropdown()">
+	<div class="card">
+		<div class="cardTile"  [ngClass]="{'expanded': isExpanded}">
+			<div>{{ title }}</div>
+			<div class="flex items-center">
+				<img src="./assets/arrowDownIcon.svg" alt="expand" />
+			</div>
+		</div>
+	</div>
+	<div class="dropdownContent" [ngClass]="{'expanded': isExpanded}">
+		<ng-content></ng-content>
+	</div>
+</div>

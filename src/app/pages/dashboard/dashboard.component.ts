@@ -46,6 +46,7 @@ export class DashboardComponent implements OnInit {
 
   user$: Observable<User | undefined>;
   rooms$: Observable<Room[]>;
+  roomToJoinId = ""
 
   ngOnInit() {
     this.roomsService.getRooms().subscribe();
@@ -54,5 +55,15 @@ export class DashboardComponent implements OnInit {
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);
+  }
+
+
+  onJoinRoomModalCancel(){
+    this.roomToJoinId = "";
+  }
+
+  onJoinRoomModalConfirm(){
+    this.router.navigate([`/room/${this.roomToJoinId}`])
+    // this.isJoinRoomModalOpened = false;
   }
 }

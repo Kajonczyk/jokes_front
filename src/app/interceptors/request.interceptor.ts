@@ -9,6 +9,7 @@ import { catchError, Observable, throwError } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import {environment} from '../../../environments';
 
 @Injectable({
   providedIn: 'root',
@@ -30,6 +31,7 @@ export class RequestInterceptor implements HttpInterceptor {
         'Bearer ' + this.cookiesService.get('jwt')
       ),
       withCredentials: true,
+      url: `${environment.apiUrl}/${request.url}`
     });
 
     return next.handle(request).pipe(

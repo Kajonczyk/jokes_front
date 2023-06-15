@@ -25,7 +25,7 @@ export class AuthService {
   register(data: Register) {
     const { confirmPassword, ...dataToSend } = data;
     return this.httpService
-      .post<string>(`${environment.apiUrl}/auth/register`, dataToSend)
+      .post<string>(`auth/register`, dataToSend)
       .pipe(
         tap((token) => {
           this.router.navigate(['/']);
@@ -41,10 +41,10 @@ export class AuthService {
 
   login(data: Login) {
     return this.httpService
-      .post<string>(`${environment.apiUrl}/auth/login`, data)
+      .post<string>(`auth/login`, data)
       .pipe(
         map((token) => this.decodeJWT(token)),
-        mergeMap((decodedToken) => this.userService.getUserInfo()),
+        mergeMap(() => this.userService.getUserInfo()),
         tap((data) => {
           this.store.dispatch(UserActions.setUserData({ user: data }));
           this.router.navigate(['/']);

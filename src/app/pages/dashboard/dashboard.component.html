@@ -2,12 +2,13 @@
   <div class="dashboardWrapper--logoutIcon" (click)="logout()">
     <img src="./assets/doorIcon.svg" alt="logout" />
   </div>
-  <h2 class="dashboardWrapper--heading">{{ (user$ | async)?.userName }}</h2>
+
+  <h2 class="dashboardWrapper--heading">{{(user$ | async)?.userName }}</h2>
   <div class="dashboardWrapper--cardsWrapper flex">
     <div class="card">
       <h3 class="card--heading">Open Rooms</h3>
       <ng-container *ngFor="let room of rooms$ | async">
-        <app-card [title]="room.name">
+        <app-card [title]="room.name" (click)="roomToJoinId = room.id">
           <div class="flex items-center">
             <div>{{ room.membersCount }}/{{ room.membersLimit }}</div>
             <img src="./assets/usersIcon.svg" alt="users" />
@@ -18,12 +19,17 @@
     <div class="flex card">
       <h3 class="card--heading">Recent Games</h3>
       <ng-container *ngFor="let room of testRoomsList">
-        <app-card [title]="room.name">
-          <div class="flex items-center">
-            <img src="./assets/arrowDownIcon.svg" alt="expand" />
-          </div>
-        </app-card>
+        <app-dropdown [title]="room.name">
+          <div>elo</div>
+        </app-dropdown>
+
       </ng-container>
     </div>
   </div>
 </div>
+
+
+<ng-container *ngIf="roomToJoinId">
+  <app-modal (onCancel)="onJoinRoomModalCancel()" (onConfirm)="onJoinRoomModalConfirm()" modalTitle="Enter room" text="You are about to join a room. Enjoy"></app-modal>
+
+</ng-container>

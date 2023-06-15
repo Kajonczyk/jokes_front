@@ -8,6 +8,7 @@ import { User } from '../../types/user';
 import { AppState } from '../../types/appState';
 import { select, Store } from '@ngrx/store';
 import { getRoomInfo } from '../../store/selectors/room.selectors';
+import {FETCH_ROOM_INFO, fetchRoomInfo} from '../../store/actions/room.action';
 
 @Component({
   selector: 'app-room',
@@ -32,7 +33,8 @@ export class RoomComponent implements OnInit {
       if (!roomId) {
         this.router.navigate(['/dashboard']);
       }
-      this.roomService.getRoomInfo(roomId!).subscribe();
+
+      this.store.dispatch(fetchRoomInfo({roomId: roomId!}))
     });
   }
 }

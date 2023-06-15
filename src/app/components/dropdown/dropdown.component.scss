@@ -1,0 +1,57 @@
+:host {
+	width: 100%;
+	margin-bottom: 15px;
+}
+
+.dropdownContent {
+	overflow: hidden;
+	height: 0;
+	color: white;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	&.expanded {
+		height: 100%;
+		background: black;
+		padding: 10px;
+
+	}
+}
+
+.dropdownWrapper {
+	box-shadow: 0 0 13px rgba(0, 0, 0, 0.9);
+
+}
+
+.card {
+	width: 100%;
+
+}
+
+.cardTile {
+	min-height: 40px;
+	width: 100%;
+	background: black;
+	color: white;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 5px 13px;
+	font-size: 26px;
+	cursor: pointer;
+	border-radius: 3px;
+
+	&.expanded {
+		border-bottom-left-radius: 0;
+		border-bottom-right-radius: 0;
+
+		img {
+			rotate: 180deg;
+		}
+	}
+}
+
+.card--heading {
+	margin-bottom: 20px;
+}
+

@@ -2,9 +2,7 @@
   <div class="player-avatar">
     <img *ngIf="variant == 1" src="assets/dog1.jpg" alt="dog1" />
     <img *ngIf="variant == 2" src="assets/dog2.png" alt="dog2" />
-    <ng-container *ngIf="isVoting"
-      ><div class="player-avatar_voting">9</div></ng-container
-    >
+    <div class="player-avatar_voting" *ngIf="isVoting">9</div>
   </div>
   <div class="player-name">
     {{ user.userName }}

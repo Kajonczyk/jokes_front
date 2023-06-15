@@ -2,9 +2,10 @@ import { createAction, props } from '@ngrx/store';
 import { User } from '../../types/user';
 import { GamePoint, Joke, Room, RoomInfo } from '../../types/room';
 
-const SET_ROOM_INFO = 'SET_ROOM_INFO';
-const SET_ROOM_POINTS = 'SET_ROOM_POINTS';
-const SET_ROOM_PAST_JOKES = 'SET_ROOM_PAST_JOKES';
+export const SET_ROOM_INFO = '[Room] Set room info';
+export const SET_ROOM_POINTS = '[Room] Set room points';
+export const SET_ROOM_PAST_JOKES = '[Room] Set room past jokes';
+export const FETCH_ROOM_INFO = '[Room] Fetch room info';
 
 export const setRoomInfo = createAction(
   SET_ROOM_INFO,
@@ -19,4 +20,10 @@ export const setRoomPoints = createAction(
 export const setRoomPastJokes = createAction(
   SET_ROOM_PAST_JOKES,
   props<{ pastJokes: Joke[] }>()
+);
+
+export const fetchRoomInfo = createAction(
+	FETCH_ROOM_INFO,
+	props<{ roomId: string }>()
+
 );

@@ -25,6 +25,10 @@ import { CardComponent } from './components/card/card.component';
 import { PlayerComponent } from './components/player/player.component';
 import { RoomService } from './services/room.service';
 import { roomReducer } from './store/reducers/room.reducer';
+import { DropdownComponent } from './components/dropdown/dropdown.component';
+import { ModalComponent } from './components/modal/modal.component';
+import {EffectsModule} from '@ngrx/effects';
+import {RoomEffects} from './store/effects/room.effects';
 
 @NgModule({
   declarations: [
@@ -38,6 +42,8 @@ import { roomReducer } from './store/reducers/room.reducer';
     RoomComponent,
     CardComponent,
     PlayerComponent,
+    DropdownComponent,
+    ModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,14 +56,9 @@ import { roomReducer } from './store/reducers/room.reducer';
       rooms: roomsReducer,
       room: roomReducer,
     }),
+    EffectsModule.forRoot([RoomEffects])
   ],
   providers: [
-    AuthService,
-    UserService,
-    GuestGuardService,
-    LoggedUserGuardService,
-    RoomsService,
-    RoomService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: RequestInterceptor,
