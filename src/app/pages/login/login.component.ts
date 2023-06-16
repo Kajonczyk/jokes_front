@@ -1,7 +1,13 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {map, mergeMap, tap } from 'rxjs/operators';
 import { AuthService } from '../../services/auth.service';
 import { Login } from '../../types/user';
+import {UserService} from '../../services/user.service';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../types/appState';
+import {fetchUserData} from '../../store/actions/user.action';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -9,7 +15,7 @@ import { Login } from '../../types/user';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private userService: UserService, private store: Store<AppState>, private router: Router) {}
 
   loginForm = new FormGroup({
     userName: new FormControl('kajonczykowaty', [
@@ -34,14 +40,9 @@ export class LoginComponent {
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
     }
-    //TEST PURPOSES ONLY
-    this.authService.login(this.loginForm.value as Login).subscribe(
-      (data) => {
-        console.log('jest kox', data);
-      },
-      (err) => {
-        console.log('jebło', err);
-      }
-    );
+
+    this.authService.login(this.loginForm.value as Login).pipe(
+      tap(() => this.store.dispatch(fetchUserData()))
+    ).subscribe()
   }
 }

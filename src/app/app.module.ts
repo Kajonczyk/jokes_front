@@ -29,6 +29,8 @@ import { DropdownComponent } from './components/dropdown/dropdown.component';
 import { ModalComponent } from './components/modal/modal.component';
 import {EffectsModule} from '@ngrx/effects';
 import {RoomEffects} from './store/effects/room.effects';
+import {RoomsEffects} from './store/effects/rooms.effects';
+import {UserEffects} from './store/effects/user.effects';
 
 @NgModule({
   declarations: [
@@ -56,7 +58,7 @@ import {RoomEffects} from './store/effects/room.effects';
       rooms: roomsReducer,
       room: roomReducer,
     }),
-    EffectsModule.forRoot([RoomEffects])
+    EffectsModule.forRoot([RoomEffects, RoomsEffects, UserEffects])
   ],
   providers: [
     {

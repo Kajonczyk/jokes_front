@@ -16,16 +16,14 @@ import {FETCH_ROOM_INFO, fetchRoomInfo} from '../../store/actions/room.action';
   styleUrls: ['./room.component.scss'],
 })
 export class RoomComponent implements OnInit {
-  roomInfo$: Observable<RoomInfo | undefined>;
+  roomInfo$: Observable<RoomInfo | undefined> = this.store.pipe(select(getRoomInfo));
 
   constructor(
     private roomService: RoomService,
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<AppState>
-  ) {
-    this.roomInfo$ = this.store.pipe(select(getRoomInfo));
-  }
+  ) {}
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {

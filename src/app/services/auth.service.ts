@@ -25,12 +25,7 @@ export class AuthService {
   register(data: Register) {
     const { confirmPassword, ...dataToSend } = data;
     return this.httpService
-      .post<string>(`auth/register`, dataToSend)
-      .pipe(
-        tap((token) => {
-          this.router.navigate(['/']);
-        })
-      );
+      .post<string>(`auth/register`, dataToSend);
   }
 
   decodeJWT(token: string) {
@@ -40,16 +35,7 @@ export class AuthService {
   }
 
   login(data: Login) {
-    return this.httpService
-      .post<string>(`auth/login`, data)
-      .pipe(
-        map((token) => this.decodeJWT(token)),
-        mergeMap(() => this.userService.getUserInfo()),
-        tap((data) => {
-          this.store.dispatch(UserActions.setUserData({ user: data }));
-          this.router.navigate(['/']);
-        })
-      );
+    return this.httpService.post<string>(`auth/login`, data)
   }
 
   isLoggedIn() {

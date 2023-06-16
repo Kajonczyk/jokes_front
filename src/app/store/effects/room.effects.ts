@@ -6,6 +6,8 @@ import { map, mergeMap } from 'rxjs/operators';
 import {RoomService} from '../../services/room.service';
 import {FETCH_ROOM_INFO} from "../actions/room.action"
 import * as RoomActions from '../actions/room.action';
+
+
 @Injectable()
 export class RoomEffects {
 	constructor(
@@ -15,7 +17,7 @@ export class RoomEffects {
 
 	fetchRoom$ = createEffect(() => this.actions$.pipe(
 			ofType(FETCH_ROOM_INFO),
-			mergeMap((action: any) => this.roomService.getRoomInfo(action.roomId)
+			mergeMap((action: {roomId: string}) => this.roomService.getRoomInfo(action.roomId)
 				.pipe(
 					switchMap(({roomInfo, pastJokes, points}) => {
 						return [

@@ -7,6 +7,10 @@ import {
 } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Register } from '../../types/user';
+import {Router} from '@angular/router';
+import {tap} from 'rxjs/operators';
+import {fetchUserData} from '../../store/actions/user.action';
+import {Store} from '@ngrx/store';
 
 @Component({
   selector: 'app-register',
@@ -14,7 +18,7 @@ import { Register } from '../../types/user';
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router, private store: Store) {}
 
   registerForm = new FormGroup(
     {
@@ -67,14 +71,8 @@ export class RegisterComponent {
       this.registerForm.markAllAsTouched();
     }
 
-    //TEST PURPOSES ONLY
-    this.authService.register(this.registerForm.value as Register).subscribe(
-      (data) => {
-        console.log('jest kox', data);
-      },
-      (err) => {
-        console.log('jebło', err);
-      }
-    );
+    this.authService.register(this.registerForm.value as Register).pipe(
+      tap(() => this.store.dispatch(fetchUserData()))
+    ).subscribe();
   }
 }

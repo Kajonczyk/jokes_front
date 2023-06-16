@@ -17,10 +17,6 @@ export class RoomsService {
   ) {}
 
   getRooms() {
-    return this.httpService.get<Room[]>(`room`).pipe(
-      tap((rooms) => {
-        this.store.dispatch(RoomsActions.setRoomsData({ rooms }));
-      })
-    );
+    return this.httpService.get<Room[]>(`room`);
   }
 }

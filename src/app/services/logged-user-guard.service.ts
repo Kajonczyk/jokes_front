@@ -9,6 +9,7 @@ export class LoggedUserGuardService implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
 
   canActivate() {
+    console.log("IS AKTIWEJT", this.authService.isLoggedIn())
     if (!this.authService.isLoggedIn()) {
       this.router.navigate(['login']);
       return false;

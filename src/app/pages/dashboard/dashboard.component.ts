@@ -9,6 +9,7 @@ import { AppState } from '../../types/appState';
 import { getUser } from '../../store/selectors/user.selectors';
 import { Observable } from 'rxjs';
 import { getRooms } from '../../store/selectors/rooms.selectors';
+import {fetchRoomsData, setRoomsData} from '../../store/actions/rooms.action';
 
 @Component({
   selector: 'app-dashboard',
@@ -49,7 +50,8 @@ export class DashboardComponent implements OnInit {
   roomToJoinId = ""
 
   ngOnInit() {
-    this.roomsService.getRooms().subscribe();
+    this.store.dispatch(fetchRoomsData())
+    // this.roomsService.getRooms().subscribe();
   }
 
   logout() {
