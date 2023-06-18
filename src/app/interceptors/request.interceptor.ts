@@ -37,7 +37,7 @@ export class RequestInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((err: any) => {
         if (err.status === 401 || err.status === 403) {
-          this.authService.logout();
+          this.authService.logout().subscribe();
           this.router.navigate(['/login']);
           localStorage.removeItem('userInfo');
         }

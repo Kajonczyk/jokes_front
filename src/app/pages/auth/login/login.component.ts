@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {map, mergeMap, tap } from 'rxjs/operators';
-import { AuthService } from '../../services/auth.service';
-import { Login } from '../../types/user';
-import {UserService} from '../../services/user.service';
+import { AuthService } from '../../../services/auth.service';
+import { Login } from '../../../types/user';
+import {UserService} from '../../../services/user.service';
 import {Store} from '@ngrx/store';
-import {AppState} from '../../types/appState';
-import {fetchUserData} from '../../store/actions/user.action';
+import {AppState} from '../../../types/appState';
+import {fetchUserData} from '../../../store/actions/user.action';
 import {Router} from '@angular/router';
 
 @Component({

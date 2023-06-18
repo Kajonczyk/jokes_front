@@ -5,11 +5,11 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
-import { Register } from '../../types/user';
+import { AuthService } from '../../../services/auth.service';
+import { Register } from '../../../types/user';
 import {Router} from '@angular/router';
 import {tap} from 'rxjs/operators';
-import {fetchUserData} from '../../store/actions/user.action';
+import {fetchUserData} from '../../../store/actions/user.action';
 import {Store} from '@ngrx/store';
 
 @Component({

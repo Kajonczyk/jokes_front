@@ -1,37 +1,26 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { RegisterComponent } from './pages/register/register.component';
-import { LoginComponent } from './pages/login/login.component';
-import { GuestGuardService } from './services/guest-guard.service';
-import { LoggedUserGuardService } from './services/logged-user-guard.service';
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { RoomComponent } from './pages/room/room.component';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {LoggedUserGuardService} from './guards/logged-user-guard.service';
 
 const routes: Routes = [
-  {
-    path: 'register',
-    component: RegisterComponent,
-    canActivate: [GuestGuardService],
-  },
-  {
-    path: 'login',
-    component: LoginComponent,
-    canActivate: [GuestGuardService],
-  },
-  {
-    path: '',
-    component: DashboardComponent,
-    canActivate: [LoggedUserGuardService],
-  },
-  {
-    path: 'room/:id',
-    component: RoomComponent,
-    canActivate: [LoggedUserGuardService],
-  },
+	{
+		path: '',
+		loadChildren: () => import('./pages/dashboard/dashboard.module').then(m => m.DashboardModule)
+	},
+	{
+		path: '',
+		loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule)
+	},
+	{
+		path: 'room/:id',
+		loadChildren: () => import('./pages/room/room.module').then(m => m.RoomModule),
+		canActivate: [LoggedUserGuardService]
+	}
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
+	imports: [RouterModule.forRoot(routes)],
+	exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule {
+}
