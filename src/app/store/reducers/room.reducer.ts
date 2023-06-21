@@ -16,5 +16,8 @@ export const roomReducer = createReducer(
   }),
   on(RoomActions.setRoomPastJokes, (state, action) => {
     return { ...state, jokes: action.pastJokes };
+  }),
+  on(RoomActions.setRoomJoke, (state, action) => {
+    return { ...state, joke: action.joke };
   })
 );

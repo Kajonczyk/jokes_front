@@ -1,0 +1,5 @@
+<app-modal (onCancel)="handleModalClose()" (onConfirm)="handleModalConfirm()" modalTitle="Tell joke">
+	<div class="w-100">
+		<textarea (change)="onChange($event)" rows="5"></textarea>
+	</div>
+</app-modal>

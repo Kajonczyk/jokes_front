@@ -23,12 +23,35 @@
 		</div>
 	</div>
 	<div class="roomWrapper-joke">
-		Yo mama is so fat that when she walks on a scale , urna at lobortis
-		ullamcorper, nisl erat commodo leo, vitae gravida purus magna nec justo.
-		Phasellus vehicula luctus ipsum gravida facilisis.
+		<ng-container *ngIf="(canTellJoke$ | async); else jokeButton">
+			<app-button variant="ghost" text="Tell joke" (click)="onJokeToldClick()"></app-button>
+		</ng-container>
+		<ng-template #jokeButton>
+			{{(roomInfo$ | async)?.joke?.content || "???"}}
+		</ng-template>
+		<div class="mt-5" *ngIf="canFinishTurn$ | async"><app-button (click)="finishTurn()" text="Finish turn" variant="ghost"></app-button></div>
 	</div>
 
+
+
+<!--	<div *ngIf="canVote$ | async">-->
+<!--		canvote-->
+<!--	</div>-->
+
+<!--	<button (click)="test()">click</button>-->
 	<div class="roomWrapper-players">
+		<div class="roomWrapper-players-voting" *ngIf="canVote$ | async">
+			<div class="roomWrapper-players-voting-circle">1</div>
+			<div class="roomWrapper-players-voting-circle">2</div>
+			<div class="roomWrapper-players-voting-circle">3</div>
+			<div class="roomWrapper-players-voting-circle">4</div>
+			<div class="roomWrapper-players-voting-circle">5</div>
+		</div>
 		<app-player *ngFor="let user of (roomInfo$ | async)?.users" [user]="user"></app-player>
 	</div>
 </div>
+
+<app-joke-modal *ngIf="isTellJokeModalDisplayed" (onJokeToldModalCancelled)="onJokeToldModalCancelled()"
+                (onJokeToldModalConfirmed)="onJokeToldModalConfirmed($event)">
+
+</app-joke-modal>

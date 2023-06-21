@@ -55,4 +55,12 @@ export interface RoomInfo {
   game: Game;
   score: GamePoint[];
   jokes: Joke[];
+  joke: Joke;
+}
+
+export enum TurnStatus {
+  CREATED = "CREATED",
+  ACTIVE = "ACTIVE",
+  CANCELLED = "CANCELLED",
+  COMPLETED = "COMPLETED",
 }
