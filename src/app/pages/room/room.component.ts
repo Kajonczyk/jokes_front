@@ -2,12 +2,13 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {RoomService} from '../../services/room.service';
 import {RoomInfo, TurnStatus} from '../../types/room';
-import {map, mergeMap, Observable} from 'rxjs';
+import {map, mergeMap, Observable, Subscription} from 'rxjs';
 import {AppState} from '../../types/appState';
 import {select, Store} from '@ngrx/store';
 import {getRoomInfo} from '../../store/selectors/room.selectors';
 import {fetchRoomInfo} from '../../store/actions/room.action';
 import {getUserId} from '../../store/selectors/user.selectors';
+import {WebSocketService} from '../../services/websocket.service';
 
 @Component({
 	selector: 'app-room',
@@ -53,16 +54,34 @@ export class RoomComponent implements OnInit {
 		).subscribe();
 	}
 
+	//@ts-ignore
+	private socketSubscription: Subscription;
 	constructor(
 		private roomService: RoomService,
 		private route: ActivatedRoute,
 		private router: Router,
-		private store: Store<AppState>
+		private store: Store<AppState>,
+		private webSocketService: WebSocketService
 	) {
 
 	}
 
 	ngOnInit() {
+		this.socketSubscription = this.webSocketService.connectToWebSocket().subscribe(
+			(event) => {
+				if (event.type === 'open') {
+					console.log('WebSocket connected');
+				} else if (event.type === 'message') {
+					console.log('WebSocket message received:', event.data);
+				}
+			},
+			(error) => {
+				console.error('WebSocket error:', error);
+			},
+			() => {
+				console.log('WebSocket connection closed');
+			}
+		);
 		this.route.paramMap.subscribe((params) => {
 			const roomId = params.get('id');
 			if (!roomId) {
@@ -81,10 +100,21 @@ export class RoomComponent implements OnInit {
 
 	}
 
+	ngOnDestroy(): void {
+		if (this.socketSubscription) {
+			this.socketSubscription.unsubscribe();
+		}
+	}
+
+	sendMessage(): void {
+		this.webSocketService.sendMessage('Hello WebSocket!');
+	}
+
 	test() {
-		this.canTellJoke$.subscribe((c) => {
-			console.log(c);
-		});
+		// this.canTellJoke$.subscribe((c) => {
+		// 	console.log(c);
+		// });
+		const message = 'Hello, WebSocket!';
 	}
 
 	onJokeToldClick() {
