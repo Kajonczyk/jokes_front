@@ -14,22 +14,7 @@ import {RoomUser} from '../../types/room';
 })
 export class PlayerComponent {
   @Input() user!: RoomUser;
-
-
   votedPoints = this.user?.votePoints
-
-
-  // currentUserId$ = this.store.select(getUserId);
-  // votedPoints$ = this.currentUserId$.pipe(
-  //   switchMap((userId) => this.store.select(getUsersVotedPoints(userId)))
-  // )
-
-  test(){
-    console.log(this.user)
-  }
-
-  constructor(private store: Store<AppState>) {
-  }
 
   variant = Math.random() > 0.5 ? 1 : 1; //v1 only
 }

@@ -30,7 +30,6 @@ export const roomReducer = createReducer(
     return state
   }),
   on(RoomActions.removeRoomUser, (state, action) => {
-    console.log({action})
     return { ...state, users: state.users!.filter(user => user.id !== action.id)};
   }),
   on(RoomActions.updateRoomJoke, (state, action) => {

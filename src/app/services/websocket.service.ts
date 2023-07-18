@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
-import { io, Socket } from 'socket.io-client';
-import { Observable } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {io, Socket} from 'socket.io-client';
 import {AppState} from '../types/appState';
 import {Store} from '@ngrx/store';
 import {
@@ -19,69 +18,40 @@ export class WebSocketService {
 	//@ts-ignore
 	private socket: Socket;
 
-	constructor(private store: Store<AppState>) { }
+	constructor(private store: Store<AppState>) {
+	}
 
 	connect(): void {
 		this.socket = io('http://localhost:3000');
 
-		// console.log(userId, roomId)/
-
-		// Nasłuchuj zdarzenia 'test'
-		this.socket.on('test', (data) => {
-			console.log('Odebrano zdarzenie "test":', data);
-		});
-
-		// Nasłuchuj zdarzenia 'joinedRoom'
 		this.socket.on('joinedRoom', (user) => {
-			this.store.dispatch(addRoomUser({user}))
-			console.log('Odebrano zdarzenie "joinedRoom":', user);
+			this.store.dispatch(addRoomUser({user}));
 		});
 
-		// Nasłuchuj zdarzenia 'joinedRoom'
-		this.socket.on('onRoomJoined', (data) => {
-			console.log('Odebrano zdarzenie "joinedRoom":', data);
-		});
-
-		// Nasłuchuj zdarzenia 'roomleft'
 		this.socket.on('roomleft', (userId) => {
-			console.log()
-			this.store.dispatch(removeRoomUser({id: userId}))
-			console.log('Odebrano zdarzenie "roomleft":', userId);
+			this.store.dispatch(removeRoomUser({id: userId}));
 		});
 
-		// Nasłuchuj zdarzenia 'jokeTold'
 		this.socket.on('jokeTold', (joke) => {
-			this.store.dispatch(updateRoomJoke({joke}))
-			console.log('Odebrano zdarzenie "jokeTold":', joke);
+			this.store.dispatch(updateRoomJoke({joke}));
 		});
 
-		// Nasłuchuj zdarzenia 'jokeTold'
 		this.socket.on('startGame', (game) => {
-			this.store.dispatch(startRoomGame({game}))
-			console.log('Odebrano zdarzenie "startGame":', game);
+			this.store.dispatch(startRoomGame({game}));
 		});
 
-		// Nasłuchuj zdarzenia 'nextTurn'
 		this.socket.on('nextTurn', (turns) => {
-			this.store.dispatch(updateRoomGameTurn({turns}))
-			console.log("JEST NEXT TURN")
-
-			console.log('Odebrano zdarzenie "nextTurn":', turns);
+			this.store.dispatch(updateRoomGameTurn({turns}));
 		});
 
-		// Nasłuchuj zdarzenia 'nextTurn'
 		this.socket.on('addScore', ({userId, amount}) => {
-
-			console.log("ADD SCORE", userId, amount)
-			this.store.dispatch(updateRoomGameUserVotePoints({userId, amount}))
-			// console.log("JEST NEXT TURN")
-			//
-			// console.log('Odebrano zdarzenie "nextTurn":', turns);
+			this.store.dispatch(updateRoomGameUserVotePoints({userId, amount}));
 		});
 	}
 
-	emitTestEvent(): void {
-		this.socket.emit('testowa', { message: 'Hello World' });
+	emitTestEvent() {
+		//LEFT ON PURPOSE
+		this.socket.emit('testowa', {message: 'Hello World'});
 	}
 
 	joinRoom(roomId: string, userId: string) {
@@ -90,7 +60,6 @@ export class WebSocketService {
 			userId: userId
 		};
 
-		console.log("ON ROOM JOINED")
 		this.socket.emit('onRoomJoined', JSON.stringify(payload));
 	}
 
@@ -107,10 +76,10 @@ export class WebSocketService {
 		const payload = {
 			roomId,
 			rounds,
-			userId,
-		}
+			userId
+		};
 
-		this.socket.emit("onGameStarted", JSON.stringify(payload))
+		this.socket.emit('onGameStarted', JSON.stringify(payload));
 	}
 
 	tellJoke(gameId: string, content: string, userId: string) {
@@ -123,17 +92,15 @@ export class WebSocketService {
 		this.socket.emit('onJokeTold', JSON.stringify(payload));
 	}
 
-	addGamePoints(roomId: string,gameId: string, userId: string, amount: number, turnId: string){
+	addGamePoints(roomId: string, gameId: string, userId: string, amount: number, turnId: string) {
 		const payload = {
 			gameId,
 			roomId,
 			userId,
 			amount,
 			turnId
-		}
-		console.log("JAZDA Z PUNKTAMI")
-
-		this.socket.emit("onScoreAdded", JSON.stringify(payload))
+		};
+		this.socket.emit('onScoreAdded', JSON.stringify(payload));
 	}
 
 	nextTurn(gameId: string, userId: string, roomId: string) {

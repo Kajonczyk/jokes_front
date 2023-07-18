@@ -13,10 +13,6 @@ export class ModalComponent {
   @Output() onCancel = new EventEmitter()
   @Output() onConfirm = new EventEmitter()
 
-
-  constructor() {
-    console.log("KONSTRUKTOR")
-  }
   onModalCancel(){
     this.onCancel.emit()
   }
@@ -24,8 +20,4 @@ export class ModalComponent {
   onModalConfirm(){
     this.onConfirm.emit()
   }
-
-
-
-
 }
