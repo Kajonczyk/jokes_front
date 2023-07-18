@@ -2,13 +2,29 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {RoomService} from '../../services/room.service';
 import {RoomInfo, TurnStatus} from '../../types/room';
-import {map, mergeMap, Observable, Subscription} from 'rxjs';
+import {
+	filter,
+	first,
+	forkJoin,
+	map,
+	mergeMap,
+	Observable,
+	of,
+	Subject,
+	Subscription,
+	switchMap,
+	take,
+	takeUntil,
+	takeWhile,
+	withLatestFrom
+} from 'rxjs';
 import {AppState} from '../../types/appState';
 import {select, Store} from '@ngrx/store';
-import {getRoomInfo} from '../../store/selectors/room.selectors';
+import {getRoomInfo, getUsersVotedPoints} from '../../store/selectors/room.selectors';
 import {fetchRoomInfo} from '../../store/actions/room.action';
 import {getUserId} from '../../store/selectors/user.selectors';
 import {WebSocketService} from '../../services/websocket.service';
+import {tap} from 'rxjs/operators';
 
 @Component({
 	selector: 'app-room',
@@ -19,7 +35,9 @@ export class RoomComponent implements OnInit {
 	roomInfo$: Observable<RoomInfo | undefined> = this.store.pipe(select(getRoomInfo));
 	currentUserId$ = this.store.select(getUserId);
 	isTellJokeModalDisplayed = false;
-	hasVotedInThisTurn = false;
+	votedPoints$ = this.currentUserId$.pipe(
+		switchMap((userId) => this.store.select(getUsersVotedPoints(userId)))
+	)
 
 	canFinishTurn$ = this.currentUserId$.pipe(
 		mergeMap(userId => this.roomInfo$.pipe(
@@ -29,6 +47,14 @@ export class RoomComponent implements OnInit {
 			})
 		))
 	);
+
+	canStartGame = this.currentUserId$.pipe(
+		mergeMap(userId => this.roomInfo$.pipe(
+			map(roomInfo => {
+				return userId === roomInfo?.ownerId && !roomInfo.game
+			})
+		))
+	)
 
 	canTellJoke$ = this.currentUserId$.pipe(
 		mergeMap(userId => this.roomInfo$.pipe(
@@ -43,19 +69,21 @@ export class RoomComponent implements OnInit {
 		mergeMap(userId => this.roomInfo$.pipe(
 			map(roomInfo => {
 				const isUsersTurn = roomInfo?.game?.turns.find(turn => turn.turnUserId === userId && turn.status === TurnStatus.ACTIVE);
-				return !isUsersTurn && roomInfo?.joke && !this.hasVotedInThisTurn;
+				const hasAlreadyVoted = roomInfo?.users.find(user => user.id === userId)?.votePoints
+				return !isUsersTurn && roomInfo?.joke && !hasAlreadyVoted;
 			})
 		))
 	);
 
 	finishTurn() {
 		this.roomInfo$.pipe(
-			mergeMap(roomInfo => this.roomService.finishTurn(roomInfo!.gameId, roomInfo!.id))
-		).subscribe();
+			first(),
+			withLatestFrom(this.currentUserId$)
+		).subscribe(([roomInfo,userId]) => {
+			this.webSocketService.nextTurn(roomInfo!.gameId, userId, roomInfo!.id)
+		})
 	}
 
-	//@ts-ignore
-	private socketSubscription: Subscription;
 	constructor(
 		private roomService: RoomService,
 		private route: ActivatedRoute,
@@ -67,21 +95,15 @@ export class RoomComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.socketSubscription = this.webSocketService.connectToWebSocket().subscribe(
-			(event) => {
-				if (event.type === 'open') {
-					console.log('WebSocket connected');
-				} else if (event.type === 'message') {
-					console.log('WebSocket message received:', event.data);
-				}
-			},
-			(error) => {
-				console.error('WebSocket error:', error);
-			},
-			() => {
-				console.log('WebSocket connection closed');
-			}
-		);
+		this.webSocketService.connect()
+		this.roomInfo$.pipe(
+			filter(room => !!room?.id),
+			first(),
+			withLatestFrom(this.currentUserId$),
+		).subscribe(([roomInfo,userId]) => {
+			this.webSocketService.joinRoom(roomInfo!.id, userId)
+		})
+
 		this.route.paramMap.subscribe((params) => {
 			const roomId = params.get('id');
 			if (!roomId) {
@@ -90,6 +112,8 @@ export class RoomComponent implements OnInit {
 
 			this.store.dispatch(fetchRoomInfo({roomId: roomId!}));
 		});
+
+		console.log("HALO")
 
 		this.roomInfo$.subscribe((data) => {
 			if (Object.keys(data || {}).length) {
@@ -100,21 +124,45 @@ export class RoomComponent implements OnInit {
 
 	}
 
-	ngOnDestroy(): void {
-		if (this.socketSubscription) {
-			this.socketSubscription.unsubscribe();
-		}
+	sendTestEvent(): void {
+		this.webSocketService.emitTestEvent();
 	}
 
-	sendMessage(): void {
-		this.webSocketService.sendMessage('Hello WebSocket!');
+	ngOnDestroy(): void {
+		this.roomInfo$.pipe(
+			first(),
+			withLatestFrom(this.currentUserId$),
+		).subscribe(([roomInfo,userId]) => {
+			this.webSocketService.leaveRoom(roomInfo!.id, userId)
+		})
+	}
+
+	vote(e: any){
+		this.roomInfo$.pipe(
+			first(),
+			withLatestFrom(this.currentUserId$)
+		).subscribe(([roomInfo, userId]) => {
+			this.webSocketService.addGamePoints(roomInfo!.id,roomInfo!.gameId, userId, Number(e.target.textContent), roomInfo!.game.turns[0].id)
+		})
+	}
+
+
+	startGame(){
+		this.roomInfo$.pipe(
+			first(),
+			withLatestFrom(this.currentUserId$),
+		).subscribe(([roomInfo,userId]) => {
+			this.webSocketService.startGame(roomInfo!.id, 5, userId)
+		})
 	}
 
 	test() {
-		// this.canTellJoke$.subscribe((c) => {
-		// 	console.log(c);
-		// });
-		const message = 'Hello, WebSocket!';
+		this.roomInfo$.pipe(
+			withLatestFrom(this.currentUserId$),
+			withLatestFrom(this.votedPoints$),
+		).subscribe((x) => {
+			console.log(x);
+		});
 	}
 
 	onJokeToldClick() {
@@ -128,12 +176,13 @@ export class RoomComponent implements OnInit {
 
 	onJokeToldModalConfirmed(joke: string) {
 		console.log(joke);
-		this.roomInfo$.pipe(
-			mergeMap(roomInfo => this.roomService.tellJoke(roomInfo!.gameId, joke))
-		).subscribe((a) => {
-			console.log(a);
-			this.isTellJokeModalDisplayed = false;
 
+		this.roomInfo$.pipe(
+			first(),
+			withLatestFrom(this.currentUserId$),
+		).subscribe(([roomInfo, userId]) => {
+			this.webSocketService.tellJoke(roomInfo!.gameId, joke, userId)
+			this.isTellJokeModalDisplayed = false;
 		});
 
 

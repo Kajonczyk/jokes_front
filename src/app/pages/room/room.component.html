@@ -18,13 +18,16 @@
 			<h3>Past Jokes</h3>
 
 			<div class="roomWrapper-info-scroll-container">
-				<app-card *ngFor="let joke of (roomInfo$ | async)?.jokes" [title]="joke.content"></app-card>
+				<app-card *ngFor="let joke of (roomInfo$ | async)?.jokes?.slice()?.reverse()" [title]="joke.content"></app-card>
 			</div>
 		</div>
 	</div>
 	<div class="roomWrapper-joke">
 		<ng-container *ngIf="(canTellJoke$ | async); else jokeButton">
 			<app-button variant="ghost" text="Tell joke" (click)="onJokeToldClick()"></app-button>
+		</ng-container>
+		<ng-container *ngIf="(canStartGame | async)">
+			<app-button variant="ghost" text="Start game" (click)="startGame()"></app-button>
 		</ng-container>
 		<ng-template #jokeButton>
 			{{(roomInfo$ | async)?.joke?.content || "???"}}
@@ -40,7 +43,7 @@
 
 	<button (click)="test()">test click</button>
 	<div class="roomWrapper-players">
-		<div class="roomWrapper-players-voting" *ngIf="canVote$ | async">
+		<div class="roomWrapper-players-voting" *ngIf="canVote$ | async" (click)="vote($event)">
 			<div class="roomWrapper-players-voting-circle">1</div>
 			<div class="roomWrapper-players-voting-circle">2</div>
 			<div class="roomWrapper-players-voting-circle">3</div>

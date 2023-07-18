@@ -32,6 +32,13 @@ export class RoomService {
 		);
 	}
 
+	startGame(roomId: string){
+		return this.httpService.post(`game`, {
+			rounds: 5,
+			roomId,
+		})
+	}
+
 	tellJoke(gameId: string, content: string){
 		return this.httpService.post(`game/${gameId}/joke`, {content})
 	}
