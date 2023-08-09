@@ -28,8 +28,10 @@
   </div>
 </div>
 
-
 <ng-container *ngIf="roomToJoinId">
-  <app-modal (onCancel)="onJoinRoomModalCancel()" (onConfirm)="onJoinRoomModalConfirm()" modalTitle="Enter room" text="You are about to join a room. Enjoy"></app-modal>
-
+  <app-modal (onCancel)="onJoinRoomModalCancel()" (onConfirm)="onJoinRoomModalConfirm()" modalTitle="Enter room">
+    <div>
+      You are about to join a room. Enjoy
+    </div>
+  </app-modal>
 </ng-container>

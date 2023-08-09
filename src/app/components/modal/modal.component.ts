@@ -20,8 +20,4 @@ export class ModalComponent {
   onModalConfirm(){
     this.onConfirm.emit()
   }
-
-
-
-
 }

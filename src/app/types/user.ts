@@ -15,5 +15,4 @@ export interface User {
   id: string;
   userName: string;
   role: number;
-  game: Game;
 }

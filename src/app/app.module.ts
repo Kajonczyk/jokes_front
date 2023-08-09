@@ -25,6 +25,7 @@ import {EffectsModule} from '@ngrx/effects';
 import {RoomEffects} from './store/effects/room.effects';
 import {RoomsEffects} from './store/effects/rooms.effects';
 import {UserEffects} from './store/effects/user.effects';
+import { JokeModalComponent } from './components/modals/joke-modal/joke-modal.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import {UserEffects} from './store/effects/user.effects';
     PlayerComponent,
     DropdownComponent,
     ModalComponent,
+    JokeModalComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {GamePoint, Joke, RoomInfo} from '../types/room';
+import {Game, GamePoint, Joke, RoomInfo} from '../types/room';
 import {forkJoin, map, mergeMap} from 'rxjs';
 
 @Injectable({
@@ -21,11 +21,31 @@ export class RoomService {
 					),
 					this.httpService.get<Joke[]>(
 						`game/${roomInfo.gameId}/joke?all=true`
+					),
+					this.httpService.get<Joke>(
+						`game/${roomInfo.gameId}/joke`
 					)
 				]).pipe(
-					map(([points, pastJokes]) => ({points, pastJokes, roomInfo}))
+					map(([points, pastJokes, joke]) => ({points, pastJokes, joke, roomInfo}))
 				);
 			})
 		);
 	}
+
+	startGame(roomId: string){
+		return this.httpService.post(`game`, {
+			rounds: 5,
+			roomId,
+		})
+	}
+
+	tellJoke(gameId: string, content: string){
+		return this.httpService.post(`game/${gameId}/joke`, {content})
+	}
+
+	finishTurn(gameId: string, roomId: string){
+		return this.httpService.post(`game/${gameId}/turns`, {roomId})
+	}
+
 }
+

@@ -5,7 +5,7 @@
 			<div class="modal--heading--line"></div>
 		</div>
 		<div class="modal--content">
-			{{text}}
+			<ng-content></ng-content>
 		</div>
 		<div class="modal--buttons">
 			<app-button [text]="'Cancel'" variant="ghost" (click)="onModalCancel()"></app-button>

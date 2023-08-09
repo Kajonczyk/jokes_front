@@ -6,9 +6,7 @@ import {
   Output,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-interface ChangeEvent {
-  target: { value: string };
-}
+
 @Component({
   selector: 'app-input',
   templateUrl: './input.component.html',

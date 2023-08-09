@@ -51,8 +51,24 @@ export interface RoomInfo {
   membersCount: string;
   membersLimit: string;
   gameId: string;
-  users: User[];
+  users: RoomUser[];
   game: Game;
   score: GamePoint[];
   jokes: Joke[];
+  joke?: Joke;
+}
+
+export interface RoomUser {
+  id: string;
+  userName: string;
+  role: number;
+  game: Game;
+  votePoints: number
+}
+
+export enum TurnStatus {
+  CREATED = "CREATED",
+  ACTIVE = "ACTIVE",
+  CANCELLED = "CANCELLED",
+  COMPLETED = "COMPLETED",
 }
